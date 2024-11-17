@@ -1,2 +1,2 @@
 # UnNature
-Brower based tool for scientists to commend published papers.
+Browser-based tool for scientists to comment on published work.
