@@ -32,6 +32,7 @@
         button {
             padding: 15px;
             font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
             border: none;
             border-radius: 5px;
@@ -69,6 +70,29 @@
             /* Darker blue on hover */
         }
 
+        .red-btn {
+            background-color: #e51414;
+            /* Blue for placeholder buttons */
+        }
+
+        .red-btn:hover {
+            background-color: #a40d0d;
+            /* Darker blue on hover */
+        }
+
+
+        .yellow-btn {
+            background-color: #827821;
+            /* Blue for placeholder buttons */
+        }
+
+        .yellow-btn:hover {
+            background-color: #645c1a;
+            /* Darker blue on hover */
+        }
+
+
+
         /* Hide certain buttons */
         .hidden {
             display: none;
@@ -78,7 +102,7 @@
 
 <body>
     <h1>UnNatural Issues</h1>
-    <div id="mainContent" class="button-grid">
+    <div id="mainPage" class="button-grid">
         <button id="downloadBtn">Download</button> <!-- Button a -->
         <button id="uploadBtn">Upload</button> <!-- Button b -->
         <button id="equationBtn" class="placeholder-btn">Equations</button>
@@ -95,9 +119,9 @@
         <h1 id="Equations_Subtitle"></h1>
         <div class="button-grid">
             <button id="eq_typo" class="placeholder-btn">Typo</button>
-            <button id="eq_missing" class="placeholder-btn">Something Missing</button>
-            <button id="eq_not_clear" class="placeholder-btn">Something Unclear</button>
-            <button id="eq_no_foundation" class="placeholder-btn">Has No Foundation</button>
+            <button id="eq_missing" class="yellow-btn">Something Missing</button>
+            <button id="eq_not_clear" class="yellow-btn">Something Unclear</button>
+            <button id="eq_no_foundation" class="red-btn">Has No Foundation</button>
         </div>
         <button id="backBtn" style="margin-top: 20px; background-color: #95a5a6;">Back</button>
     </div>

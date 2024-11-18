@@ -64,7 +64,7 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
 // refer to id of the button
 document.getElementById("equationBtn").addEventListener("click", () => {
     // Hide main content
-    document.getElementById("mainContent").classList.add("hidden");
+    document.getElementById("mainPage").classList.add("hidden");
 
     // Update subcategory title and show subcategory content
     document.getElementById("Equations_Subtitle").innerText = "Equation Subcategories";
@@ -77,6 +77,15 @@ document.getElementById("eq_typo").addEventListener("click", () => {
     alert("You clicked on the subcategory for typos");
 });
 
+document.getElementById("eq_missing").addEventListener("click", () => {
+    alert("You clicked on the subcategory for missing things in equations");
+});
+document.getElementById("eq_not_clear").addEventListener("click", () => {
+    alert("You clicked on the subcategory for something not clear");
+});
+document.getElementById("eq_no_foundation").addEventListener("click", () => {
+    alert("You clicked on the subcategory for no foundation");
+});
 
 
 // Back button logic
@@ -85,5 +94,5 @@ document.getElementById("backBtn").addEventListener("click", () => {
     document.getElementById("equations_sub_div").classList.add("hidden");
 
     // Show main content
-    document.getElementById("mainContent").classList.remove("hidden");
+    document.getElementById("mainPage").classList.remove("hidden");
 });
