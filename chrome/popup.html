@@ -68,21 +68,40 @@
             background-color: #2980b9;
             /* Darker blue on hover */
         }
+
+        /* Hide certain buttons */
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 
 <body>
     <h1>UnNatural Issues</h1>
-    <div class="button-grid">
+    <div id="mainContent" class="button-grid">
         <button id="downloadBtn">Download</button> <!-- Button a -->
         <button id="uploadBtn">Upload</button> <!-- Button b -->
-        <button class="placeholder-btn">Equations</button>
-        <button class="placeholder-btn">Figures</button>
-        <button class="placeholder-btn">Data/Code</button>
-        <button class="placeholder-btn">Statistics</button>
-        <button class="placeholder-btn">References</button>
-        <button class="placeholder-btn">Bias</button>
+        <button id="equationBtn" class="placeholder-btn">Equations</button>
+        <button id="figuresBtn" class="placeholder-btn">Figures</button>
+        <button id="datacodeBtn" class="placeholder-btn">Data/Code</button>
+        <button id="statisticsBtn" class="placeholder-btn">Statistics</button>
+        <button id="referencesBtn" class="placeholder-btn">References</button>
+        <button id="biasBtn" class="placeholder-btn">Bias</button>
     </div>
+
+
+    <!-- Add here the subcategories -->
+    <div id="equations_sub_div" class="hidden">
+        <h1 id="Equations_Subtitle"></h1>
+        <div class="button-grid">
+            <button id="eq_typo" class="placeholder-btn">Typo</button>
+            <button id="eq_missing" class="placeholder-btn">Something Missing</button>
+            <button id="eq_not_clear" class="placeholder-btn">Something Unclear</button>
+            <button id="eq_no_foundation" class="placeholder-btn">Has No Foundation</button>
+        </div>
+        <button id="backBtn" style="margin-top: 20px; background-color: #95a5a6;">Back</button>
+    </div>
+
     <script src="popup.js"></script>
 </body>
 

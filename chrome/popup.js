@@ -58,3 +58,32 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
         alert("Failed to read the file. Ensure the file exists and is accessible.");
     }
 });
+
+
+// Logic for going to subcategories
+// refer to id of the button
+document.getElementById("equationBtn").addEventListener("click", () => {
+    // Hide main content
+    document.getElementById("mainContent").classList.add("hidden");
+
+    // Update subcategory title and show subcategory content
+    document.getElementById("Equations_Subtitle").innerText = "Equation Subcategories";
+    document.getElementById("equations_sub_div").classList.remove("hidden");
+});
+
+// add logic buttons for subcategories
+// Subcategory button logic
+document.getElementById("eq_typo").addEventListener("click", () => {
+    alert("You clicked on the subcategory for typos");
+});
+
+
+
+// Back button logic
+document.getElementById("backBtn").addEventListener("click", () => {
+    // Hide subcategory content
+    document.getElementById("equations_sub_div").classList.add("hidden");
+
+    // Show main content
+    document.getElementById("mainContent").classList.remove("hidden");
+});
