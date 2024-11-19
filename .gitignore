@@ -1,2 +1,4 @@
 .vscode
 src/manifest.json
+__pycache__
+src_server/instance
