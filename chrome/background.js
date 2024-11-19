@@ -86,9 +86,6 @@ function showAlert(url, id) {
     // Show an alert directly in the background script
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         // Here we are querying the active tab in the current window
-        const tab = tabs[0];
-        console.log("tabs:", tabs);
-        console.log("tab url:", tab.url);
         if (url) {
             // Show alert with URL
             console.log("now script should be executed");
