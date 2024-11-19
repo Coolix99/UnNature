@@ -1,0 +1,30 @@
+{
+    "manifest_version": 2,
+    "name": "My first extension",
+    "version": "1.0",
+    "description": "Shows a menu on click and a popup on specific URLs.",
+    "icons": {
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    },
+    "browser_action": {
+      "default_popup": "popup/popup.html",
+      "default_icon": "icons/icon-48.png"
+    },
+    "permissions": ["storage", "activeTab",
+      "activeTab",
+      "downloads",
+      "downloads.open"
+    ],
+    "content_scripts": [
+      {
+        "matches": ["https://de.wikipedia.org/wiki/Jesus_von_Nazaret"],
+        "js": ["content/content.js"]
+      }
+    ],
+    "background": {
+      "scripts": ["background/background.js"],
+      "persistent": true
+    }
+  }
+  

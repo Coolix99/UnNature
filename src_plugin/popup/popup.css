@@ -1,0 +1,23 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 10px;
+    width: 200px;
+  }
+  
+  h3 {
+    font-size: 16px;
+  }
+  
+  p {
+    margin: 10px 0;
+  }
+  
+  button {
+    background-color: #0078d7;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
