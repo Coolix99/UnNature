@@ -88,16 +88,23 @@ document.getElementById("eq_no_foundation").addEventListener("click", () => {
 });
 
 
+// toggle text button to  "close text window" in case it is clicked again
+const toggleTextWindowBtn = document.getElementById("toggleTextWindowBtn");
+const textWindow = document.getElementById("textWindow");
 
 
-
-
-
-// Logic for writing a comment
-document.getElementById("openTextWindowBtn").addEventListener("click", () => {
-    const textWindow = document.getElementById("textWindow");
-    textWindow.classList.remove("hidden"); // Show the text area
+toggleTextWindowBtn.addEventListener("click", () => {
+    if (textWindow.classList.contains("hidden")) {
+        // Show the text window
+        textWindow.classList.remove("hidden");
+        toggleTextWindowBtn.textContent = "Close Text Window";
+    } else {
+        // Hide the text window
+        textWindow.classList.add("hidden");
+        toggleTextWindowBtn.textContent = "Open Text Window";
+    }
 });
+
 
 // Handle submitting the text
 document.getElementById("submitTextBtn").addEventListener("click", () => {

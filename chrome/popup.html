@@ -4,17 +4,22 @@
 <head>
     <title>Button Grid</title>
     <style>
+        :root {
+            /* Define reusable colors for buttons */
+            --red: #e74c3c;
+            --green: #27ae60;
+            --blue: #3498db;
+            --yellow: #827821;
+            --gray: #95a5a6;
+        }
+
         body {
             width: 300px;
-            /* Set width */
             height: 400px;
-            /* Set height */
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 20px;
-            /*  overflow: hidden;  */
         }
-
 
         h1 {
             color: #333;
@@ -24,12 +29,11 @@
         .button-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            /* 2 columns */
             gap: 10px;
-            /* Spacing between buttons */
         }
 
-        button {
+        /* Base button styles */
+        .button {
             padding: 15px;
             font-size: 16px;
             font-weight: bold;
@@ -37,78 +41,38 @@
             border: none;
             border-radius: 5px;
             color: white;
+            transition: background-color 0.2s ease;
+            /* Smooth hover effect */
         }
 
-        /* Styles for the buttons */
-        #downloadBtn {
-            background-color: #e74c3c;
-            /* Red */
+        /* Dynamic hover effect */
+        .button:hover {
+            filter: brightness(0.75);
+            /* Darken color to 75% */
         }
 
-        #downloadBtn:hover {
-            background-color: #c0392b;
-            /* Darker red on hover */
-        }
-
-        #uploadBtn {
-            background-color: #27ae60;
-            /* Green */
-        }
-
-        #uploadBtn:hover {
-            background-color: #1e8449;
-            /* Darker green on hover */
-        }
-
-        #textWindow textarea {
-            resize: none;
-            /* Prevent resizing */
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        #submitTextBtn {
-            background-color: #2286c8;
-        }
-
-        #submitTextBtn:hover {
-            background-color: #20618c;
-        }
-
-        .placeholder-btn {
-            background-color: #3498db;
-            /* Blue for placeholder buttons */
-        }
-
-        .placeholder-btn:hover {
-            background-color: #2980b9;
-            /* Darker blue on hover */
-        }
-
+        /* Define reusable button colors */
         .red-btn {
-            background-color: #e51414;
-            /* Blue for placeholder buttons */
+            background-color: var(--red);
         }
 
-        .red-btn:hover {
-            background-color: #a40d0d;
-            /* Darker blue on hover */
+        .green-btn {
+            background-color: var(--green);
         }
 
+        .blue-btn {
+            background-color: var(--blue);
+        }
 
         .yellow-btn {
-            background-color: #827821;
-            /* Blue for placeholder buttons */
+            background-color: var(--yellow);
         }
 
-        .yellow-btn:hover {
-            background-color: #645c1a;
-            /* Darker blue on hover */
+        .gray-btn {
+            background-color: var(--gray);
         }
 
-
-
-        /* Hide certain buttons */
+        /* Hidden content styling */
         .hidden {
             display: none;
         }
@@ -118,42 +82,31 @@
 <body>
     <h1>UnNatural Issues</h1>
     <div id="mainPage" class="button-grid">
-        <button id="downloadBtn">Download</button> <!-- Button a -->
-        <button id="uploadBtn">Upload</button> <!-- Button b -->
-        <button id="equationBtn" class="placeholder-btn">Equations</button>
-        <button id="figuresBtn" class="placeholder-btn">Figures</button>
-        <button id="datacodeBtn" class="placeholder-btn">Data/Code</button>
-        <button id="statisticsBtn" class="placeholder-btn">Statistics</button>
-        <button id="referencesBtn" class="placeholder-btn">References</button>
-        <button id="biasBtn" class="placeholder-btn">Bias</button>
+        <button id="downloadBtn" class="button red-btn">Download</button>
+        <button id="uploadBtn" class="button green-btn">Upload</button>
+        <button id="equationBtn" class="button blue-btn">Equations</button>
+        <button id="figuresBtn" class="button blue-btn">Figures</button>
+        <button id="datacodeBtn" class="button blue-btn">Data/Code</button>
+        <button id="statisticsBtn" class="button blue-btn">Statistics</button>
+        <button id="referencesBtn" class="button blue-btn">References</button>
+        <button id="biasBtn" class="button blue-btn">Bias</button>
     </div>
 
-
-    <!-- Add here the subcategories -->
     <div id="equations_sub_div" class="hidden">
-        <h1 id="Equations_Subtitle"></h1>
+        <h1 id="Equations_Subtitle">Equation Subcategories</h1>
         <div class="button-grid">
-            <button id="eq_typo" class="placeholder-btn">Typo</button>
-            <button id="eq_missing" class="yellow-btn">Something Missing</button>
-            <button id="eq_not_clear" class="yellow-btn">Something Unclear</button>
-            <button id="eq_no_foundation" class="red-btn">Has No Foundation</button>
+            <button id="eq_typo" class="button blue-btn">Typo</button>
+            <button id="eq_missing" class="button yellow-btn">Something Missing</button>
+            <button id="eq_not_clear" class="button yellow-btn">Something Unclear</button>
+            <button id="eq_no_foundation" class="button red-btn">Has No Foundation</button>
         </div>
-
-
-
-        <!-- Button for entering comment section -->
-        <button id="openTextWindowBtn" style="margin-top: 20px; background-color: #8d44ad;">Write Comment</button>
-
-        <!-- write text and add button to submit -->
+        <button id="toggleTextWindowBtn" class="button blue-btn" style="margin-top: 20px;">Open Text Window</button>
         <div id="textWindow" class="hidden" style="margin-top: 20px;">
-            <textarea id="userInput" rows="5" style="width: 90%; padding: 10px; font-size: 14px;"></textarea>
-            <button id="submitTextBtn" class="placeholder-btn">Submit</button>
-
+            <textarea id="userInput" rows="5"
+                style="width: 90%; padding: 10px; font-size: 14px; resize: none; border: 1px solid #ccc; border-radius: 5px;"></textarea>
+            <button id="submitTextBtn" class="button blue-btn" style="margin-top: 10px;">Submit</button>
         </div>
-
-
-
-        <button id="backBtn" style="margin-top: 20px; background-color: #95a5a6;">Back</button>
+        <button id="backBtn" class="button gray-btn" style="margin-top: 20px;">Back</button>
     </div>
 
     <script src="popup.js"></script>
