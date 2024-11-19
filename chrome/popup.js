@@ -163,34 +163,6 @@ document.getElementById("submitTextBtn").addEventListener("click", async () => {
 });
 
 
-
-
-
-
-
-
-
-
-
-
-// // Handle submitting the text
-// document.getElementById("submitTextBtn").addEventListener("click", () => {
-//     const userInput = document.getElementById("userInput").value;
-//     if (userInput.trim()) {
-//         alert(`You entered: ${userInput}`);
-//         document.getElementById("userInput").value = ""; // Clear the input
-//     } else {
-//         alert("Please enter some text!");
-//     }
-// });
-
-
-
-
-
-
-
-
 // Back button logic
 document.getElementById("backBtn").addEventListener("click", () => {
     // Hide subcategory content
