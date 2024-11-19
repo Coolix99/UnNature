@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Button Grid</title>
+    <style>
+        body {
+            width: 300px;
+            /* Set width */
+            height: 400px;
+            /* Set height */
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            /*  overflow: hidden;  */
+        }
+
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            /* 2 columns */
+            gap: 10px;
+            /* Spacing between buttons */
+        }
+
+        button {
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            color: white;
+        }
+
+        /* Styles for the buttons */
+        #downloadBtn {
+            background-color: #e74c3c;
+            /* Red */
+        }
+
+        #downloadBtn:hover {
+            background-color: #c0392b;
+            /* Darker red on hover */
+        }
+
+        #uploadBtn {
+            background-color: #27ae60;
+            /* Green */
+        }
+
+        #uploadBtn:hover {
+            background-color: #1e8449;
+            /* Darker green on hover */
+        }
+
+        .placeholder-btn {
+            background-color: #3498db;
+            /* Blue for placeholder buttons */
+        }
+
+        .placeholder-btn:hover {
+            background-color: #2980b9;
+            /* Darker blue on hover */
+        }
+
+        .red-btn {
+            background-color: #e51414;
+            /* Blue for placeholder buttons */
+        }
+
+        .red-btn:hover {
+            background-color: #a40d0d;
+            /* Darker blue on hover */
+        }
+
+
+        .yellow-btn {
+            background-color: #827821;
+            /* Blue for placeholder buttons */
+        }
+
+        .yellow-btn:hover {
+            background-color: #645c1a;
+            /* Darker blue on hover */
+        }
+
+
+
+        /* Hide certain buttons */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>UnNatural Issues</h1>
+    <div id="mainPage" class="button-grid">
+        <button id="downloadBtn">Download</button> <!-- Button a -->
+        <button id="uploadBtn">Upload</button> <!-- Button b -->
+        <button id="equationBtn" class="placeholder-btn">Equations</button>
+        <button id="figuresBtn" class="placeholder-btn">Figures</button>
+        <button id="datacodeBtn" class="placeholder-btn">Data/Code</button>
+        <button id="statisticsBtn" class="placeholder-btn">Statistics</button>
+        <button id="referencesBtn" class="placeholder-btn">References</button>
+        <button id="biasBtn" class="placeholder-btn">Bias</button>
+    </div>
+
+
+    <!-- Add here the subcategories -->
+    <div id="equations_sub_div" class="hidden">
+        <h1 id="Equations_Subtitle"></h1>
+        <div class="button-grid">
+            <button id="eq_typo" class="placeholder-btn">Typo</button>
+            <button id="eq_missing" class="yellow-btn">Something Missing</button>
+            <button id="eq_not_clear" class="yellow-btn">Something Unclear</button>
+            <button id="eq_no_foundation" class="red-btn">Has No Foundation</button>
+        </div>
+        <button id="backBtn" style="margin-top: 20px; background-color: #95a5a6;">Back</button>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>
