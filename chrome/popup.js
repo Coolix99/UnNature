@@ -106,16 +106,83 @@ toggleTextWindowBtn.addEventListener("click", () => {
 });
 
 
-// Handle submitting the text
-document.getElementById("submitTextBtn").addEventListener("click", () => {
+
+
+
+
+
+
+
+
+// Submit text and download CSV logic
+document.getElementById("submitTextBtn").addEventListener("click", async () => {
     const userInput = document.getElementById("userInput").value;
-    if (userInput.trim()) {
-        alert(`You entered: ${userInput}`);
-        document.getElementById("userInput").value = ""; // Clear the input
-    } else {
+
+    // Validate input
+    if (!userInput.trim()) {
         alert("Please enter some text!");
+        return;
+    }
+
+    // Get the subcategory name
+    // const subcategory = "Equations";
+    const subcategory = document.getElementById("Equations_Subtitle").innerText;
+
+
+    try {
+        // Get the current active tab's URL
+        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        const url = tab?.url || "URL not available";
+
+        // Create CSV content
+        const csvContent = `Subcategory,URL,Text\n"${subcategory}","${url}","${userInput}"`;
+
+        // Create a Blob from the CSV content
+        const blob = new Blob([csvContent], { type: "text/csv" });
+
+        // Create a temporary anchor element to trigger the download
+        const a = document.createElement("a");
+        const csvFilename = `submission_${Date.now()}.csv`; // Unique filename
+        a.href = URL.createObjectURL(blob);
+        a.download = csvFilename;
+
+        // Trigger the download
+        a.click();
+
+        // Clean up the object URL
+        URL.revokeObjectURL(a.href);
+
+        // Clear the text area after submission
+        document.getElementById("userInput").value = "";
+
+        alert("Your text has been submitted and downloaded as a CSV file!");
+    } catch (error) {
+        console.error("Error during submission:", error);
+        alert("An error occurred while submitting the text. Please try again.");
     }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+// // Handle submitting the text
+// document.getElementById("submitTextBtn").addEventListener("click", () => {
+//     const userInput = document.getElementById("userInput").value;
+//     if (userInput.trim()) {
+//         alert(`You entered: ${userInput}`);
+//         document.getElementById("userInput").value = ""; // Clear the input
+//     } else {
+//         alert("Please enter some text!");
+//     }
+// });
 
 
 
