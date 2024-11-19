@@ -67,7 +67,7 @@ document.getElementById("equationBtn").addEventListener("click", () => {
     document.getElementById("mainPage").classList.add("hidden");
 
     // Update subcategory title and show subcategory content
-    document.getElementById("Equations_Subtitle").innerText = "Equation Subcategories";
+    document.getElementById("Equations_Subtitle").innerText = "Equations";
     document.getElementById("equations_sub_div").classList.remove("hidden");
 });
 
@@ -86,6 +86,35 @@ document.getElementById("eq_not_clear").addEventListener("click", () => {
 document.getElementById("eq_no_foundation").addEventListener("click", () => {
     alert("You clicked on the subcategory for no foundation");
 });
+
+
+
+
+
+
+
+// Logic for writing a comment
+document.getElementById("openTextWindowBtn").addEventListener("click", () => {
+    const textWindow = document.getElementById("textWindow");
+    textWindow.classList.remove("hidden"); // Show the text area
+});
+
+// Handle submitting the text
+document.getElementById("submitTextBtn").addEventListener("click", () => {
+    const userInput = document.getElementById("userInput").value;
+    if (userInput.trim()) {
+        alert(`You entered: ${userInput}`);
+        document.getElementById("userInput").value = ""; // Clear the input
+    } else {
+        alert("Please enter some text!");
+    }
+});
+
+
+
+
+
+
 
 
 // Back button logic

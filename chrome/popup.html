@@ -60,6 +60,21 @@
             /* Darker green on hover */
         }
 
+        #textWindow textarea {
+            resize: none;
+            /* Prevent resizing */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #submitTextBtn {
+            background-color: #2286c8;
+        }
+
+        #submitTextBtn:hover {
+            background-color: #20618c;
+        }
+
         .placeholder-btn {
             background-color: #3498db;
             /* Blue for placeholder buttons */
@@ -123,6 +138,21 @@
             <button id="eq_not_clear" class="yellow-btn">Something Unclear</button>
             <button id="eq_no_foundation" class="red-btn">Has No Foundation</button>
         </div>
+
+
+
+        <!-- Button for entering comment section -->
+        <button id="openTextWindowBtn" style="margin-top: 20px; background-color: #8d44ad;">Write Comment</button>
+
+        <!-- write text and add button to submit -->
+        <div id="textWindow" class="hidden" style="margin-top: 20px;">
+            <textarea id="userInput" rows="5" style="width: 90%; padding: 10px; font-size: 14px;"></textarea>
+            <button id="submitTextBtn" class="placeholder-btn">Submit</button>
+
+        </div>
+
+
+
         <button id="backBtn" style="margin-top: 20px; background-color: #95a5a6;">Back</button>
     </div>
 
