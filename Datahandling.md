@@ -78,5 +78,96 @@ FROM vote_count_for_comments
 WHERE comment_id = 1
 ```
 
+4. List all answers on posts with the post_id=5, ordered by date
+
+```sql
+SELECT 
+    answer_id,
+    post_id,
+    user_id,
+    date_posted,
+    comment
+FROM 
+    Answers
+WHERE 
+    post_id = 5
+ORDER BY 
+    date_posted ASC;
+
+```
 
 
+## Example setup
+
+```python
+import mysql.connector
+
+# Establish the connection
+conn = mysql.connector.connect(
+    host="localhost",
+    user="your_username",  # Replace with your database username
+    password="your_password"  # Replace with your database password
+)
+
+cursor = conn.cursor()
+
+# Create Database
+cursor.execute("CREATE DATABASE IF NOT EXISTS UserPostDatabase")
+cursor.execute("USE UserPostDatabase")
+
+# Create Tables
+tables = {
+    "Users": """
+        CREATE TABLE IF NOT EXISTS Users (
+            user_id INT AUTO_INCREMENT PRIMARY KEY,
+            email VARCHAR(255) NOT NULL UNIQUE,
+            displayed_name VARCHAR(255) NOT NULL,
+            password VARCHAR(255) NOT NULL,
+            status VARCHAR(50) NOT NULL
+        )
+    """,
+    "Posts": """
+        CREATE TABLE IF NOT EXISTS Posts (
+            post_id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT NOT NULL,
+            website_url VARCHAR(255) NOT NULL,
+            category VARCHAR(100) NOT NULL,
+            date_posted DATETIME DEFAULT CURRENT_TIMESTAMP,
+            comment TEXT NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES Users(user_id)
+        )
+    """,
+    "Answers": """
+        CREATE TABLE IF NOT EXISTS Answers (
+            answer_id INT AUTO_INCREMENT PRIMARY KEY,
+            post_id INT NOT NULL,
+            user_id INT NOT NULL,
+            date_posted DATETIME DEFAULT CURRENT_TIMESTAMP,
+            comment TEXT NOT NULL,
+            FOREIGN KEY (post_id) REFERENCES Posts(post_id),
+            FOREIGN KEY (user_id) REFERENCES Users(user_id)
+        )
+    """,
+    "Votes": """
+        CREATE TABLE IF NOT EXISTS Votes (
+            vote_id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT NOT NULL,
+            comment_id INT NOT NULL,
+            vote INT NOT NULL CHECK (vote IN (-1, 1)),  -- -1 for downvote, 1 for upvote
+            date_voted DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES Users(user_id)
+        )
+    """
+}
+
+# Execute each table creation query
+for table_name, table_sql in tables.items():
+    cursor.execute(table_sql)
+
+print("Database and tables created successfully!")
+
+# Close the connection
+cursor.close()
+conn.close()
+
+```
