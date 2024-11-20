@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Comment</title>
+</head>
+<body>
+    <h2>Add a Comment</h2>
+    <form id="comment-form">
+        <label for="comment">Comment:</label><br>
+        <textarea id="comment" name="comment" rows="4" required></textarea><br><br>
+        <button type="submit">Add Comment</button>
+    </form>
+    <div id="response"></div>
+
+    <script>
+        let token = null;
+
+        // Fetch token from login (replace this with the token from login process)
+        token = prompt("Enter your access token (received after login):");
+
+        document.getElementById('comment-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            if (!token) {
+                alert('Please log in first!');
+                return;
+            }
+
+            const comment = document.getElementById('comment').value;
+
+            const response = await fetch('http://127.0.0.1:5000/api/comments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ comment })
+            });
+
+            const result = await response.json();
+            document.getElementById('response').textContent = JSON.stringify(result, null, 2);
+        });
+    </script>
+</body>
+</html>

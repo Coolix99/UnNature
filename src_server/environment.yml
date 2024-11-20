@@ -1,0 +1,16 @@
+name: flask_env  # Name of your environment
+channels:
+  - conda-forge  # Use conda-forge for updated packages
+dependencies:
+  - python=3.10  # Specify your Python version
+  - flask
+  - flask-cors
+  - flask-sqlalchemy
+  - flask-mail
+  - flask-jwt-extended
+  - python-decouple
+  - bcrypt
+  - itsdangerous
+  - pip
+  - pip:
+      - jwt
