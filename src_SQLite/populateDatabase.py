@@ -1,7 +1,6 @@
 # randomly intitiliaze the database with some data
 
 import sqlite3
-import os
 import random
 
 
