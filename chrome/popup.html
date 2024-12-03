@@ -26,6 +26,13 @@
             margin-bottom: 20px;
         }
 
+        #toggleTextWindowBtn {
+            display: block;
+            /* Ensure it behaves as a block element */
+            margin: 0 auto;
+            /* Center it horizontally */
+        }
+
         .button-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -82,8 +89,8 @@
 <body>
     <h1>UnNatural Issues</h1>
     <div id="mainPage" class="button-grid">
-        <button id="downloadBtn" class="button red-btn">Download</button>
-        <button id="uploadBtn" class="button green-btn">Upload</button>
+        <button id="awesomeBtn" class="button green-btn">Awesome Work</button>
+        <button id="protocolBtn" class="button blue-btn">Protocol</button>
         <button id="equationBtn" class="button blue-btn">Equations</button>
         <button id="figuresBtn" class="button blue-btn">Figures</button>
         <button id="datacodeBtn" class="button blue-btn">Data/Code</button>
@@ -96,9 +103,9 @@
         <h1 id="Equations_Subtitle">Equation Subcategories</h1>
         <div class="button-grid">
             <button id="eq_typo" class="button blue-btn">Typo</button>
-            <button id="eq_missing" class="button yellow-btn">Something Missing</button>
-            <button id="eq_not_clear" class="button yellow-btn">Something Unclear</button>
-            <button id="eq_no_foundation" class="button red-btn">Has No Foundation</button>
+            <button id="eq_missing" class="button blue-btn">Something Missing</button>
+            <button id="eq_not_clear" class="button blue-btn">Something Unclear</button>
+            <button id="eq_no_foundation" class="button blue-btn">Has No Foundation</button>
         </div>
         <button id="toggleTextWindowBtn" class="button blue-btn" style="margin-top: 20px;">Open Text Window</button>
         <div id="textWindow" class="hidden" style="margin-top: 20px;">

@@ -1,65 +1,3 @@
-document.getElementById("downloadBtn").addEventListener("click", async () => {
-    // Get the active tab
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-    if (tab && tab.url) {
-        // Create a CSV content
-        const csvContent = `URL\n${tab.url}`;
-
-        // Create a Blob from the CSV content
-        const blob = new Blob([csvContent], { type: "text/csv" });
-
-        // Create a temporary anchor element to trigger the download
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "current_url.csv";
-
-        // Trigger the download
-        a.click();
-
-        // Clean up the object URL
-        URL.revokeObjectURL(url);
-    } else {
-        alert("Unable to fetch the current tab URL.");
-    }
-});
-
-
-
-
-// Upload button functionality
-document.getElementById("uploadBtn").addEventListener("click", async () => {
-    // Define the path to the file (adjust for your OS environment if needed)
-    const filePath = "/home/eric/Downloads/current_url.csv";
-
-    try {
-        // Fetch the file using a file URL
-        const response = await fetch(`file://${filePath}`);
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch file: ${response.statusText}`);
-        }
-
-        // Get the text content of the file
-        const fileContent = await response.text();
-
-        // Process the content (parsing CSV in this case)
-        const lines = fileContent.split("\n");
-        const url = lines[1]?.trim(); // Extract the URL from the second line
-
-        if (url) {
-            alert(`URL from file: ${url}`);
-        } else {
-            alert("The file is empty or does not contain a valid URL.");
-        }
-    } catch (error) {
-        console.error("Error reading file:", error);
-        alert("Failed to read the file. Ensure the file exists and is accessible.");
-    }
-});
-
-
 // Logic for going to subcategories
 // refer to id of the button
 document.getElementById("equationBtn").addEventListener("click", () => {
@@ -73,19 +11,50 @@ document.getElementById("equationBtn").addEventListener("click", () => {
 
 // add logic buttons for subcategories
 // Subcategory button logic
-document.getElementById("eq_typo").addEventListener("click", () => {
-    alert("You clicked on the subcategory for typos");
+// Helper function to reset all subcategory buttons to blue
+function resetSubcategoryButtons() {
+    // Select all buttons in the subcategory, excluding the "Back" button
+    const buttons = document.querySelectorAll("#equations_sub_div .button:not(#backBtn)");
+    buttons.forEach((button) => {
+        button.style.backgroundColor = "var(--blue)"; // Reset to blue
+    });
+}
+
+// Helper function to show/hide the "Open Text Window" button
+function toggleTextWindowButton(show) {
+    const toggleButton = document.getElementById("toggleTextWindowBtn");
+    toggleButton.style.display = show ? "block" : "none"; // Show or hide the button
+}
+
+// Add event listeners for each subcategory button
+document.getElementById("eq_typo").addEventListener("click", (event) => {
+    resetSubcategoryButtons(); // Reset all buttons
+    event.target.style.backgroundColor = "var(--green)"; // Set the clicked button to green
+    toggleTextWindowButton(true); // Show the "Open Text Window" button
+    // alert("You clicked on the subcategory for typos");
 });
 
-document.getElementById("eq_missing").addEventListener("click", () => {
-    alert("You clicked on the subcategory for missing things in equations");
+document.getElementById("eq_missing").addEventListener("click", (event) => {
+    resetSubcategoryButtons(); // Reset all buttons
+    event.target.style.backgroundColor = "var(--green)"; // Set the clicked button to green
+    toggleTextWindowButton(true); // Show the "Open Text Window" button
+    // alert("You clicked on the subcategory for missing things in equations");
 });
-document.getElementById("eq_not_clear").addEventListener("click", () => {
-    alert("You clicked on the subcategory for something not clear");
+
+document.getElementById("eq_not_clear").addEventListener("click", (event) => {
+    resetSubcategoryButtons(); // Reset all buttons
+    event.target.style.backgroundColor = "var(--green)"; // Set the clicked button to green
+    toggleTextWindowButton(true); // Show the "Open Text Window" button
+    // alert("You clicked on the subcategory for something not clear");
 });
-document.getElementById("eq_no_foundation").addEventListener("click", () => {
-    alert("You clicked on the subcategory for no foundation");
+
+document.getElementById("eq_no_foundation").addEventListener("click", (event) => {
+    resetSubcategoryButtons(); // Reset all buttons
+    event.target.style.backgroundColor = "var(--green)"; // Set the clicked button to green
+    toggleTextWindowButton(true); // Show the "Open Text Window" button
+    // alert("You clicked on the subcategory for no foundation");
 });
+
 
 
 // toggle text button to  "close text window" in case it is clicked again
@@ -106,11 +75,8 @@ toggleTextWindowBtn.addEventListener("click", () => {
 });
 
 
-
-
-
-
-
+// Initially hide the "Open Text Window" button
+toggleTextWindowButton(false);
 
 
 
@@ -120,13 +86,16 @@ document.getElementById("submitTextBtn").addEventListener("click", async () => {
 
     // Validate input
     if (!userInput.trim()) {
-        alert("Please enter some text!");
+        alert("Please enter some text, if you want :)");
         return;
     }
 
-    // Get the subcategory name
-    // const subcategory = "Equations";
-    const subcategory = document.getElementById("Equations_Subtitle").innerText;
+    // Get the Category from the subtitle (Equations_Subtitle)
+    const category = document.getElementById("Equations_Subtitle").innerText;
+
+    // Find the clicked subcategory button
+    const activeSubcategory = document.querySelector("#equations_sub_div .button[style*='--green']");
+    const subcategory = activeSubcategory ? activeSubcategory.innerText : "Unknown";
 
 
     try {
@@ -135,7 +104,7 @@ document.getElementById("submitTextBtn").addEventListener("click", async () => {
         const url = tab?.url || "URL not available";
 
         // Create CSV content
-        const csvContent = `Subcategory,URL,Text\n"${subcategory}","${url}","${userInput}"`;
+        const csvContent = `Category,Subcategory,URL,Text\n"${category}","${subcategory}","${url}","${userInput}"`;
 
         // Create a Blob from the CSV content
         const blob = new Blob([csvContent], { type: "text/csv" });
