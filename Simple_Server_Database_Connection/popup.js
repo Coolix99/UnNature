@@ -27,10 +27,16 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then((data) => {
                 document.getElementById('comment-display').textContent = `Comment: ${data.comment}`;
+
+                // Notify the background script to set a badge
+                chrome.runtime.sendMessage({ type: 'SET_BADGE', text: '1' });
             })
             .catch((error) => {
                 console.error('Error fetching comment:', error);
                 document.getElementById('comment-display').textContent = 'No comment found.';
+
+                // Clear the badge if no comment is found
+                chrome.runtime.sendMessage({ type: 'CLEAR_BADGE' });
             });
 
         // Add event listener to save the comment
