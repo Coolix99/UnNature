@@ -12,5 +12,6 @@ dependencies:
   - bcrypt
   - itsdangerous
   - pip
+  - Werkzeug=2.2.2
   - pip:
-      - jwt
+      - jwt=1.7.1 # version 1.7.1 otherwise get error: cannot import name 'DecodeError' from 'jwt'

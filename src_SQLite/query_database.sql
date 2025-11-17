@@ -20,6 +20,7 @@
 -- );
 
 
+-- Ctrl + SHIFT + P
 SELECT *
 FROM USERS;
 

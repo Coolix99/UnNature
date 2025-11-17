@@ -67,7 +67,7 @@
 ### Vote count for comments
 - vote_id: 1
 - user_id: 6
-- comment_id: 1
+- comment_id: 1 alternatively post_id
 - vote: +1
 
 3. SQL to get the final vote count for comment_id 1

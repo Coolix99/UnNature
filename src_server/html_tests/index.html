@@ -3,169 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Test Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h2 {
-            color: #333;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        input, textarea, button {
-            display: block;
-            margin: 10px 0;
-            padding: 8px;
-            font-size: 14px;
-            width: 100%;
-        }
-        button {
-            background-color: #0078D7;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #005A9E;
-        }
-        .response {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
-        }
-    </style>
+    <title>Unified App</title>
 </head>
 <body>
-    <h2>Test API Functionality</h2>
+    <h1>Unified App</h1>
 
-    <section id="registration">
-        <h3>Register</h3>
+    <section id="register-section">
+        <h2>Register</h2>
         <form id="register-form">
-            <input type="text" id="register-username" placeholder="Username" required>
-            <input type="password" id="register-password" placeholder="Password" required>
+            <label for="register-username">Username:</label><br>
+            <input type="text" id="register-username" name="username" required><br>
+            <label for="register-email">Email:</label><br>
+            <input type="email" id="register-email" name="email" required><br>
+            <label for="register-password">Password:</label><br>
+            <input type="password" id="register-password" name="password" required><br><br>
             <button type="submit">Register</button>
         </form>
-        <div id="register-response" class="response"></div>
+        <div id="register-response"></div>
     </section>
 
-    <section id="login">
-        <h3>Login</h3>
+    <section id="login-section">
+        <h2>Login</h2>
         <form id="login-form">
-            <input type="text" id="login-username" placeholder="Username" required>
-            <input type="password" id="login-password" placeholder="Password" required>
+            <label for="login-username">Username:</label><br>
+            <input type="text" id="login-username" name="username" required><br>
+            <label for="login-password">Password:</label><br>
+            <input type="password" id="login-password" name="password" required><br><br>
             <button type="submit">Login</button>
         </form>
-        <div id="login-response" class="response"></div>
+        <div id="login-response"></div>
     </section>
 
-    <section id="comments">
-        <h3>Manage Comments</h3>
-        <form id="add-comment-form">
-            <textarea id="comment-text" placeholder="Write your comment..." required></textarea>
+    <section id="reset-password-section">
+        <h2>Password Reset Request</h2>
+        <form id="reset-request-form">
+            <label for="reset-email">Email:</label><br>
+            <input type="email" id="reset-email" name="email" required><br><br>
+            <button type="submit">Request Reset</button>
+        </form>
+        <div id="reset-response"></div>
+    </section>
+
+    <section id="add-comment-section">
+        <h2>Add a Comment</h2>
+        <form id="comment-form">
+            <label for="comment">Comment:</label><br>
+            <textarea id="comment" name="comment" rows="4" required></textarea><br><br>
             <button type="submit">Add Comment</button>
         </form>
-        <div id="comments-list" class="response"></div>
+        <div id="comment-response"></div>
+    </section>
+
+    <section id="debug-section">
+        <h2>Debugging</h2>
+        <button id="remove-token-button">Remove Saved Token</button>
+        <div id="debug-response"></div>
     </section>
 
     <script>
-       let token = null;
+        // Utility function to update the response display
+        function displayResponse(sectionId, response) {
+            document.getElementById(sectionId).textContent = JSON.stringify(response, null, 2);
+        }
 
-// Helper function to display response messages
-function displayResponse(elementId, message) {
-    document.getElementById(elementId).textContent = JSON.stringify(message, null, 2);
-}
+        // Register form
+        document.getElementById('register-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const username = document.getElementById('register-username').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
 
-// Helper function to check if the user is logged in
-function isLoggedIn() {
-    return token !== null;
-}
+            const response = await fetch('http://127.0.0.1:5000/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, email, password })
+            });
 
-// Handle user registration
-document.getElementById("register-form").addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const username = document.getElementById("register-username").value;
-    const password = document.getElementById("register-password").value;
+            const result = await response.json();
+            displayResponse('register-response', result);
+        });
 
-    const response = await fetch("http://127.0.0.1:5000/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-    });
-    const result = await response.json();
-    displayResponse("register-response", result);
-});
+        // Login form
+        document.getElementById('login-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
 
-// Handle user login
-document.getElementById("login-form").addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const username = document.getElementById("login-username").value;
-    const password = document.getElementById("login-password").value;
+            const response = await fetch('http://127.0.0.1:5000/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
 
-    const response = await fetch("http://127.0.0.1:5000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-    });
-    const result = await response.json();
-    displayResponse("login-response", result);
+            const result = await response.json();
+            displayResponse('login-response', result);
 
-    if (result.success) {
-        token = result.token; // Store the token
-        alert("Login successful! Token stored.");
-    }
-});
+            if (result.success) {
+                localStorage.setItem('accessToken', result.access_token);
+                alert('Login successful! Token saved in browser.');
+            }
+        });
 
-// Handle adding comments
-document.getElementById("add-comment-form").addEventListener("submit", async (event) => {
-    event.preventDefault();
+        // Reset password request
+        document.getElementById('reset-request-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const email = document.getElementById('reset-email').value;
 
-    if (!isLoggedIn()) {
-        alert("Please log in first!");
-        return;
-    }
+            const response = await fetch('http://127.0.0.1:5000/api/auth/reset-password-request', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            });
 
-    const comment = document.getElementById("comment-text").value;
+            const result = await response.json();
+            displayResponse('reset-response', result);
+        });
 
-    const response = await fetch("http://127.0.0.1:5000/api/comments", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-        },
-        body: JSON.stringify({ comment }),
-    });
-    const result = await response.json();
-    displayResponse("comments-list", result);
-});
+        // Add comment form
+        document.getElementById('comment-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const token = localStorage.getItem('accessToken');
+            if (!token) {
+                alert('Please log in first!');
+                return;
+            }
 
-// Fetch all comments (GET /api/comments)
-async function fetchComments() {
-    if (!isLoggedIn()) {
-        alert("Please log in first!");
-        return;
-    }
+            const comment = document.getElementById('comment').value;
 
-    const response = await fetch("http://127.0.0.1:5000/api/comments", {
-        method: "GET",
-        headers: {
-            "Authorization": `Bearer ${token}`,
-        },
-    });
-    const result = await response.json();
-    displayResponse("comments-list", result);
-}
+            const response = await fetch('http://127.0.0.1:5000/api/comments/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ comment })
+            });
 
-// Fetch comments periodically, but only if logged in
-setInterval(() => {
-    if (isLoggedIn()) {
-        fetchComments();
-    }
-}, 5000);
-
+            const result = await response.json();
+            displayResponse('comment-response', result);
+        });
+    
+         // Remove token button
+        document.getElementById('remove-token-button').addEventListener('click', () => {
+            localStorage.removeItem('accessToken');
+            displayResponse('debug-response', { success: true, message: 'Token removed successfully' });
+            alert('Saved token has been removed.');
+        });
+    
     </script>
 </body>
 </html>
