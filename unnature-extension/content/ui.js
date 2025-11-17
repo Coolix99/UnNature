@@ -285,6 +285,17 @@ function renderCommentsTree(comments, parentId, container, depth, meta) {
         deleteBtn.textContent = "Delete";
         deleteBtn.style.cssText = "font-size:10px;padding:2px 6px;cursor:pointer;background:rgba(200,50,50,0.7);color:white;border:none;border-radius:3px;";
         btnContainer.appendChild(deleteBtn);
+        
+        // Check if this comment has replies
+        const hasReplies = comments.some(reply => reply.parentId === c.id);
+        let toggleBtn = null;
+        
+        if (hasReplies) {
+            toggleBtn = document.createElement("button");
+            toggleBtn.textContent = "▼ Show replies";
+            toggleBtn.style.cssText = "font-size:10px;margin-left:4px;padding:2px 6px;cursor:pointer;background:rgba(80,100,140,0.7);color:white;border:none;border-radius:3px;";
+            btnContainer.appendChild(toggleBtn);
+        }
 
         wrapper.appendChild(btnContainer);
 
@@ -296,21 +307,58 @@ function renderCommentsTree(comments, parentId, container, depth, meta) {
         };
 
         editBtn.onclick = async () => {
-            const newText = prompt("Edit comment:", c.text);
-            if (newText !== null && newText.trim()) {
-                const paperKey = getPaperKey(meta);
-                await updateCommentText(paperKey, c.id, newText.trim());
-                const updated = await getComments(paperKey);
-                container.innerHTML = "";
-                if (updated.length === 0) {
-                    const empty = document.createElement("div");
-                    empty.textContent = "No comments yet.";
-                    empty.style.opacity = "0.7";
-                    container.appendChild(empty);
-                } else {
-                    renderCommentsTree(updated, null, container, 0, meta);
+            // Hide the rendered text and buttons
+            textDiv.style.display = "none";
+            btnContainer.style.display = "none";
+            
+            // Create textarea for editing
+            const editArea = document.createElement("textarea");
+            editArea.value = c.text;
+            editArea.style.cssText = "width:100%;min-height:60px;padding:4px;background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:3px;font-family:inherit;font-size:12px;resize:vertical;";
+            wrapper.insertBefore(editArea, dateDiv);
+            
+            // Create save/cancel buttons
+            const editBtnContainer = document.createElement("div");
+            editBtnContainer.style.marginTop = "4px";
+            
+            const saveBtn = document.createElement("button");
+            saveBtn.textContent = "Save";
+            saveBtn.style.cssText = "font-size:10px;margin-right:4px;padding:2px 6px;cursor:pointer;background:rgba(50,150,50,0.7);color:white;border:none;border-radius:3px;";
+            editBtnContainer.appendChild(saveBtn);
+            
+            const cancelBtn = document.createElement("button");
+            cancelBtn.textContent = "Cancel";
+            cancelBtn.style.cssText = "font-size:10px;padding:2px 6px;cursor:pointer;background:rgba(100,100,100,0.7);color:white;border:none;border-radius:3px;";
+            editBtnContainer.appendChild(cancelBtn);
+            
+            wrapper.insertBefore(editBtnContainer, dateDiv);
+            
+            editArea.focus();
+            
+            saveBtn.onclick = async () => {
+                const newText = editArea.value.trim();
+                if (newText) {
+                    const paperKey = getPaperKey(meta);
+                    await updateCommentText(paperKey, c.id, newText);
+                    const updated = await getComments(paperKey);
+                    container.innerHTML = "";
+                    if (updated.length === 0) {
+                        const empty = document.createElement("div");
+                        empty.textContent = "No comments yet.";
+                        empty.style.opacity = "0.7";
+                        container.appendChild(empty);
+                    } else {
+                        renderCommentsTree(updated, null, container, 0, meta);
+                    }
                 }
-            }
+            };
+            
+            cancelBtn.onclick = () => {
+                editArea.remove();
+                editBtnContainer.remove();
+                textDiv.style.display = "";
+                btnContainer.style.display = "";
+            };
         };
 
         deleteBtn.onclick = async () => {
@@ -331,7 +379,27 @@ function renderCommentsTree(comments, parentId, container, depth, meta) {
         };
 
         container.appendChild(wrapper);
-        renderCommentsTree(comments, c.id, container, depth + 1, meta);
+        
+        // Create container for replies (collapsed by default)
+        if (hasReplies) {
+            const repliesContainer = document.createElement("div");
+            repliesContainer.style.display = "none";
+            container.appendChild(repliesContainer);
+            
+            // Render replies into the container
+            renderCommentsTree(comments, c.id, repliesContainer, depth + 1, meta);
+            
+            // Toggle functionality
+            toggleBtn.onclick = () => {
+                if (repliesContainer.style.display === "none") {
+                    repliesContainer.style.display = "";
+                    toggleBtn.textContent = "▲ Hide replies";
+                } else {
+                    repliesContainer.style.display = "none";
+                    toggleBtn.textContent = "▼ Show replies";
+                }
+            };
+        }
     }
 }
 
