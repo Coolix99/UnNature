@@ -1,0 +1,28 @@
+{
+  "manifest_version": 2,
+  "name": "UnNature",
+  "version": "0.1",
+  "description": "Minimal test version of the UnNature extension.",
+  "icons": {
+    "48": "icons/nature_u.png"
+  },
+
+  "permissions": ["storage", "activeTab"],
+
+  "browser_action": {
+    "default_icon": "icons/nature_u.png",
+    "default_popup": "popup/popup.html"
+  },
+
+  "background": {
+    "scripts": ["background/background.js"],
+    "persistent": true
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/content.js"]
+    }
+  ]
+}
