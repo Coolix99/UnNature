@@ -19,10 +19,20 @@
     "persistent": true
   },
 
+  "web_accessible_resources": [
+    "libs/marked.min.js"
+  ],
+
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content/content.js"]
+      "js": [
+        "libs/marked.min.js",
+        "content/detect.js",
+        "content/comments.js",
+        "content/ui.js",
+        "content/content.js"
+      ]
     }
   ]
 }
