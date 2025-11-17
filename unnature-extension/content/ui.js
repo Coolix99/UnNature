@@ -1,8 +1,33 @@
 // ui.js — overlay + rendering + UI logic
 
 function renderMarkdown(text) {
-    if (typeof marked !== "undefined") return marked.parse(text);
-    return text;
+    if (typeof marked === "undefined") return text;
+    
+    // First, render markdown
+    let html = marked.parse(text);
+    
+    // Then, render math expressions if KaTeX is available
+    if (typeof katex !== "undefined") {
+        // Replace inline math: $...$
+        html = html.replace(/\$([^\$\n]+?)\$/g, (match, math) => {
+            try {
+                return katex.renderToString(math, { throwOnError: false, displayMode: false });
+            } catch (e) {
+                return match;
+            }
+        });
+        
+        // Replace display math: $$...$$
+        html = html.replace(/\$\$([^\$]+?)\$\$/g, (match, math) => {
+            try {
+                return katex.renderToString(math, { throwOnError: false, displayMode: true });
+            } catch (e) {
+                return match;
+            }
+        });
+    }
+    
+    return html;
 }
 
 // ---------------- CREATE OVERLAY ----------------
@@ -220,29 +245,48 @@ function createOverlay(meta) {
 
 // ---------------- RENDER TREE ----------------
 
-function renderCommentsTree(comments, parentId, container, depth) {
+function renderCommentsTree(comments, parentId, container, depth, meta) {
     const children = comments.filter(c => c.parentId === parentId);
     children.sort((a, b) => a.createdAt - b.createdAt);
 
     for (const c of children) {
         const wrapper = document.createElement("div");
         wrapper.style.marginLeft = (depth * 12) + "px";
+        wrapper.style.marginBottom = "8px";
 
         const textDiv = document.createElement("div");
         textDiv.innerHTML = renderMarkdown(c.text);
         textDiv.style.padding = "3px";
+        textDiv.style.background = "rgba(255,255,255,0.05)";
+        textDiv.style.borderRadius = "3px";
         wrapper.appendChild(textDiv);
 
         const dateDiv = document.createElement("div");
         dateDiv.textContent = new Date(c.createdAt).toLocaleString();
         dateDiv.style.fontSize = "10px";
         dateDiv.style.opacity = "0.7";
+        dateDiv.style.marginTop = "2px";
         wrapper.appendChild(dateDiv);
+
+        const btnContainer = document.createElement("div");
+        btnContainer.style.marginTop = "4px";
 
         const replyBtn = document.createElement("button");
         replyBtn.textContent = "Reply";
-        replyBtn.style.fontSize = "10px";
-        wrapper.appendChild(replyBtn);
+        replyBtn.style.cssText = "font-size:10px;margin-right:4px;padding:2px 6px;cursor:pointer;";
+        btnContainer.appendChild(replyBtn);
+
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "Edit";
+        editBtn.style.cssText = "font-size:10px;margin-right:4px;padding:2px 6px;cursor:pointer;";
+        btnContainer.appendChild(editBtn);
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.style.cssText = "font-size:10px;padding:2px 6px;cursor:pointer;background:rgba(200,50,50,0.7);color:white;border:none;border-radius:3px;";
+        btnContainer.appendChild(deleteBtn);
+
+        wrapper.appendChild(btnContainer);
 
         replyBtn.onclick = () => {
             const textarea = container.closest("#unnature-overlay").querySelector("textarea");
@@ -251,8 +295,43 @@ function renderCommentsTree(comments, parentId, container, depth) {
             textarea.focus();
         };
 
+        editBtn.onclick = async () => {
+            const newText = prompt("Edit comment:", c.text);
+            if (newText !== null && newText.trim()) {
+                const paperKey = getPaperKey(meta);
+                await updateCommentText(paperKey, c.id, newText.trim());
+                const updated = await getComments(paperKey);
+                container.innerHTML = "";
+                if (updated.length === 0) {
+                    const empty = document.createElement("div");
+                    empty.textContent = "No comments yet.";
+                    empty.style.opacity = "0.7";
+                    container.appendChild(empty);
+                } else {
+                    renderCommentsTree(updated, null, container, 0, meta);
+                }
+            }
+        };
+
+        deleteBtn.onclick = async () => {
+            if (confirm("Delete this comment?")) {
+                const paperKey = getPaperKey(meta);
+                await deleteComment(paperKey, c.id);
+                const updated = await getComments(paperKey);
+                container.innerHTML = "";
+                if (updated.length === 0) {
+                    const empty = document.createElement("div");
+                    empty.textContent = "No comments yet.";
+                    empty.style.opacity = "0.7";
+                    container.appendChild(empty);
+                } else {
+                    renderCommentsTree(updated, null, container, 0, meta);
+                }
+            }
+        };
+
         container.appendChild(wrapper);
-        renderCommentsTree(comments, c.id, container, depth + 1);
+        renderCommentsTree(comments, c.id, container, depth + 1, meta);
     }
 }
 
@@ -269,7 +348,7 @@ async function initCommentsAndSettings(meta, ui) {
         empty.style.opacity = "0.7";
         ui.commentsContainer.appendChild(empty);
     } else {
-        renderCommentsTree(comments, null, ui.commentsContainer, 0);
+        renderCommentsTree(comments, null, ui.commentsContainer, 0, meta);
     }
 
     ui.addButton.onclick = async () => {
@@ -285,7 +364,7 @@ async function initCommentsAndSettings(meta, ui) {
 
         const updated = await getComments(paperKey);
         ui.commentsContainer.innerHTML = "";
-        renderCommentsTree(updated, null, ui.commentsContainer, 0);
+        renderCommentsTree(updated, null, ui.commentsContainer, 0, meta);
     };
 
     const label = await getFolderLabel();

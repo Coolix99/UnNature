@@ -1,34 +1,6 @@
 // comments.js — local DB + comment operations
 
-const ext = typeof browser !== "undefined" ? browser : chrome;
-const DB_KEY = "unnatureLocalDB";
-
-// ---------------- DB LOAD / SAVE ----------------
-
-async function loadDB() {
-    const res = await ext.storage.local.get(DB_KEY);
-
-    if (!res[DB_KEY]) {
-        const empty = {
-            settings: { localFolderLabel: "" },
-            comments: {}
-        };
-        await ext.storage.local.set({ [DB_KEY]: empty });
-        return empty;
-    }
-
-    return res[DB_KEY];
-}
-
-async function saveDB(db) {
-    await ext.storage.local.set({ [DB_KEY]: db });
-}
-
-// ---------------- KEY GEN ----------------
-
-function getPaperKey(meta) {
-    return meta.doi || meta.articleId || meta.url;
-}
+// Note: ext, DB_KEY, loadDB, saveDB, getPaperKey are defined in detect.js
 
 // ---------------- COMMENTS ----------------
 
@@ -59,6 +31,13 @@ async function updateCommentText(paperKey, id, newText) {
     const c = list.find(x => x.id === id);
     if (!c) return;
     c.text = newText;
+    await saveDB(db);
+}
+
+async function deleteComment(paperKey, id) {
+    const db = await loadDB();
+    const list = db.comments[paperKey] || [];
+    db.comments[paperKey] = list.filter(x => x.id !== id);
     await saveDB(db);
 }
 

@@ -20,7 +20,10 @@
   },
 
   "web_accessible_resources": [
-    "libs/marked.min.js"
+    "libs/marked.min.js",
+    "libs/katex.min.js",
+    "libs/katex.min.css",
+    "libs/fonts/*"
   ],
 
   "content_scripts": [
@@ -28,10 +31,14 @@
       "matches": ["<all_urls>"],
       "js": [
         "libs/marked.min.js",
+        "libs/katex.min.js",
         "content/detect.js",
         "content/comments.js",
         "content/ui.js",
         "content/content.js"
+      ],
+      "css": [
+        "libs/katex.min.css"
       ]
     }
   ]
